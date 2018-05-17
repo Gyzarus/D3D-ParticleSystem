@@ -89,7 +89,7 @@
     <ClCompile Include="..\..\Common\Waves.cpp" />
     <ClCompile Include="..\..\Common\xnacollision.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="ParticlesDemo.cpp" />
+    <ClCompile Include="Particles.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="Sky.cpp" />

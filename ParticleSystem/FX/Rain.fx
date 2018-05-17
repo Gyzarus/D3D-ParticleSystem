@@ -116,7 +116,8 @@ void StreamOutGS(point Particle gin[1],
 	if( gin[0].Type == PT_EMITTER )
 	{	
 		// time to emit a new particle?
-		//数值越大，粒子越少
+		// 若为粒子发射器
+		// 数值越大，粒子越少
 		if( gin[0].Age > 0.002f )
 		{
 			for(int i = 0; i < 5; ++i)
@@ -147,6 +148,7 @@ void StreamOutGS(point Particle gin[1],
 	else
 	{
 		// Specify conditions to keep particle; this may vary from system to system.
+		// 若为普通粒子，一定时间保持粒子
 		if( gin[0].Age <= 3.0f )
 			ptStream.Append(gin[0]);
 	}		
@@ -188,6 +190,7 @@ VertexOut DrawVS(Particle vin)
 	float t = vin.Age;
 	
 	// constant acceleration equation
+	// 恒定加速度计算距离公式
 	vout.PosW = 0.5f*t*t*gAccelW + t*vin.InitialVelW + vin.InitialPosW;
 	
 	vout.Type  = vin.Type;
@@ -202,7 +205,7 @@ struct GeoOut
 };
 
 // The draw GS just expands points into lines.
-//拉伸雨滴
+// 拉伸雨滴
 [maxvertexcount(2)]
 void DrawGS(point VertexOut gin[1], 
             inout LineStream<GeoOut> lineStream)

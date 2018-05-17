@@ -127,7 +127,7 @@ void StreamOutGS(point Particle gin[1],
 	{	
 		// time to emit a new particle?
 		// xiaojun if( gin[0].Age > 0.005f )
-		if( gin[0].Age > 1.0f )
+		if( gin[0].Age > 0.005f )
 		{
 			float3 vRandom = RandUnitVec3(0.0f);
 			vRandom.x *= 0.5f;
@@ -201,8 +201,7 @@ VertexOut DrawVS(Particle vin)
 	// fade color with time
 	// 渐隐效果（调整颜色）
 	// smoothstep（）：根据param3在param1与param2中的位置返回0~1的一个值，是一个中部上升速度快，边界上升速度慢的递增函数
-	// xiaojun float opacity = 1.0f - smoothstep(0.0f, 1.0f, t/1.0f);
-	float opacity = 1.0f ;
+	float opacity = 1.0f - smoothstep(0.0f, 1.0f, t / 1.0f);
 	vout.Color = float4(1.0f, 1.0f, 1.0f, opacity);
 	
 	vout.SizeW = vin.SizeW;

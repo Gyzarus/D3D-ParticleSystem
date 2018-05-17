@@ -74,7 +74,7 @@ float4 PS(VertexOut pin,
           uniform int gLightCount, 
 		  uniform bool gUseTexure, 
 		  uniform bool gAlphaClip, 
-		  uniform bool gFogEnabled, 
+		  uniform bool gFogEnabled,
 		  uniform bool gReflectionEnabled) : SV_Target
 {
 	// Interpolating normal can unnormalize it, so normalize it.
@@ -145,7 +145,6 @@ float4 PS(VertexOut pin,
 	//
 	// Fogging
 	//
-
 	if( gFogEnabled )
 	{
 		float fogLerp = saturate( (distToEye - gFogStart) / gFogRange ); 
@@ -159,7 +158,11 @@ float4 PS(VertexOut pin,
 
     return litColor;
 }
-
+//根据支持特性的不同，分为不同的technique.
+//	是否使用纹理
+//	是否使用alpha clip
+//	是否使用雾效
+//	是否使用雾效+clip
 technique11 Light1
 {
     pass P0
