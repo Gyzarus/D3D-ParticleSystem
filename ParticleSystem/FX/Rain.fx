@@ -117,7 +117,7 @@ void StreamOutGS(point Particle gin[1],
 	{	
 		// time to emit a new particle?
 		// 若为粒子发射器
-		// 数值越大，粒子越少
+		// 经过0.002s,生成一个新的粒子  
 		if( gin[0].Age > 0.002f )
 		{
 			for(int i = 0; i < 5; ++i)

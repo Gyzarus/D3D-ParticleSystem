@@ -262,7 +262,6 @@ void ParticlesApp::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
-
 	SetCapture(mhMainWnd);
 }
 
@@ -276,6 +275,7 @@ void ParticlesApp::OnMouseMove(WPARAM btnState, int x, int y)
 	if( (btnState & MK_LBUTTON) != 0 )
 	{
 		// Make each pixel correspond to a quarter of a degree.
+		// 使每个像素对应四分之一度
 		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
 		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
 
