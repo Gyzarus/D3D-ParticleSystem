@@ -26,7 +26,8 @@ cbuffer cbFixed
 {
 	// Net constant acceleration used to accerlate the particles.
 	//粒子的恒定加速度
-	float3 gAccelW = {-1.0f, -9.8f, 0.0f};
+	//xiaojun
+	float3 gAccelW = {0.0f, -9.8f, 0.0f};
 };
  
 // Array of textures for texturing the particles.
@@ -73,12 +74,14 @@ float3 RandUnitVec3(float offset)
 float3 RandVec3(float offset)
 {
 	// Use game time plus offset to sample random texture.
+	//xiaojun 	float u = (gGameTime + offset);
 	float u = (gGameTime + offset);
 	
 	// coordinates in [-1,1]
 	float3 v = gRandomTex.SampleLevel(samLinear, u, 0).xyz;
 	
-	return v;
+	//xiaojun return v;
+	return normalize(v);
 }
  
 //***********************************************
@@ -107,7 +110,9 @@ Particle StreamOutVS(Particle vin)
 // programed here will generally vary from particle system
 // to particle system, as the destroy/spawn rules will be 
 // different.
-[maxvertexcount(6)]
+
+// Stream-out GS只负责发射新粒子并破坏旧粒子。 这里编程的逻辑通按照粒子系统的不同而不同，因为破坏/重生规则将会不同。
+[maxvertexcount(101)]
 void StreamOutGS(point Particle gin[1], 
                  inout PointStream<Particle> ptStream)
 {	
@@ -117,24 +122,32 @@ void StreamOutGS(point Particle gin[1],
 	{	
 		// time to emit a new particle?
 		// 若为粒子发射器
-		// 经过0.002s,生成一个新的粒子  
-		if( gin[0].Age > 0.002f )
+		// 经过0.002s,生成五个新的粒子  
+		if( gin[0].Age > 1.0f )
 		{
-			for(int i = 0; i < 5; ++i)
+			for(int i = 0; i < 100; ++i) 
 			{
 				// Spread rain drops out above the camera.
-				//将雨滴散开
+				//将雨滴随机散开
 				float3 vRandom = 35.0f*RandVec3((float)i/5.0f);
 				//离头顶一定距离
-				vRandom.y = 20.0f;
-			
+				//xiaojun vRandom.y = 0.0f;
+				vRandom.x = 0.0f;
+				vRandom.z = 2.0f;
+				vRandom.y = 100.0f;
+				
+				float3 vRandom2 = 35.0f*RandVec3((float)i /100.0f);
+				//
+
 				Particle p;
-				p.InitialPosW = gEmitPosW.xyz + vRandom;
-				p.InitialVelW = float3(0.0f, 0.0f, 0.0f);
+				//xiaojun p.InitialPosW = gEmitPosW.xyz + vRandom;
+				p.InitialPosW = vRandom;
+				//xiaojun p.InitialVelW = float3(0.0f, 0.0f, 0.0f);
+				p.InitialVelW = vRandom2;
 				p.SizeW       = float2(1.0f, 1.0f);
 				p.Age         = 0.0f;
 				p.Type        = PT_FLARE;
-			
+				
 				ptStream.Append(p);
 			}
 			
@@ -182,7 +195,7 @@ struct VertexOut
 	float3 PosW  : POSITION;
 	uint   Type  : TYPE;
 };
-
+// 编写定点着色器
 VertexOut DrawVS(Particle vin)
 {
 	VertexOut vout;
@@ -207,6 +220,9 @@ struct GeoOut
 // The draw GS just expands points into lines.
 // 拉伸雨滴
 [maxvertexcount(2)]
+// 编写几何着色器
+//xiaojun 
+/*
 void DrawGS(point VertexOut gin[1], 
             inout LineStream<GeoOut> lineStream)
 {	
@@ -215,7 +231,9 @@ void DrawGS(point VertexOut gin[1],
 	{
 		// Slant line in acceleration direction.
 		float3 p0 = gin[0].PosW;
-		float3 p1 = gin[0].PosW + 0.07f*gAccelW;
+
+		//xiaojun float3 p1 = gin[0].PosW + 0.07f*gAccelW;
+		float3 p1 = gin[0].PosW + 0.07f;
 		//雨线起点
 		GeoOut v0;
 		v0.PosH = mul(float4(p0, 1.0f), gViewProj);
@@ -228,7 +246,18 @@ void DrawGS(point VertexOut gin[1],
 		lineStream.Append(v1);
 	}
 }
+*/
+void DrawGS(point VertexOut gin[1],
+	inout PointStream<Particle> lineStream)
+{
+	// do not draw emitter particles.
+	if (gin[0].Type != PT_EMITTER)
+	{
 
+		lineStream.Append(gin[1]);
+	}
+}
+// 像素着点器
 float4 DrawPS(GeoOut pin) : SV_TARGET
 {
 	return gTexArray.Sample(samLinear, float3(pin.Tex, 0));
