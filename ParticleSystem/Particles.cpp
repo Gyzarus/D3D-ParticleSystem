@@ -41,7 +41,7 @@ public:
 private:
 	//Sky* mSky;
 	Terrain mTerrain;
-
+	//着色器资源视图接口指定着色器在渲染过程中可以访问的子资源,着色器资源一般包括一个常量缓冲区，一个纹理缓冲区和一个纹理。
 	ID3D11ShaderResourceView* mFlareTexSRV;
 	ID3D11ShaderResourceView* mRainTexSRV;
 	ID3D11ShaderResourceView* mRandomTexSRV;
@@ -49,7 +49,7 @@ private:
 	ParticleSystem mFire;
 	ParticleSystem mRain;
 
-	DirectionalLight mDirLights[3];
+	//DirectionalLight mDirLights[3];
 
 	Camera mCam;
 
@@ -62,6 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 				   PSTR cmdLine, int showCmd)
 {
 	// Enable run-time memory check for debug builds.
+	// 为调试启用运行时内存检查。
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
@@ -84,7 +85,7 @@ ParticlesApp::ParticlesApp(HINSTANCE hInstance)
 	mLastMousePos.y = 0;
 
 	mCam.SetPosition(0.0f, 2.0f, 100.0f);
-
+	/*
 	mDirLights[0].Ambient  = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
 	mDirLights[0].Diffuse  = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
@@ -98,7 +99,7 @@ ParticlesApp::ParticlesApp(HINSTANCE hInstance)
 	mDirLights[2].Ambient  = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 	mDirLights[2].Diffuse  = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 	mDirLights[2].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[2].Direction = XMFLOAT3(-0.57735f, -0.57735f, -0.57735f);
+	mDirLights[2].Direction = XMFLOAT3(-0.57735f, -0.57735f, -0.57735f);*/
 }
 
 ParticlesApp::~ParticlesApp()
@@ -122,8 +123,10 @@ bool ParticlesApp::Init()
 		return false;
 
 	// Must init Effects first since InputLayouts depend on shader signatures.
+	// 效果文件初始化
 	Effects::InitAll(md3dDevice);
 	InputLayouts::InitAll(md3dDevice);
+	// 渲染状态初始化 unread
 	RenderStates::InitAll(md3dDevice);
 	//xiaojun
 	//mSky = new Sky(md3dDevice, L"Textures/grasscube1024.dds", 5000.0f);
@@ -142,7 +145,7 @@ bool ParticlesApp::Init()
 	tii.CellSpacing = 0.5f;
 
 	mTerrain.Init(md3dDevice, md3dImmediateContext, tii);
-
+	// 随机材质加载
 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(md3dDevice);
 
 	std::vector<std::wstring> flares;
@@ -174,6 +177,7 @@ void ParticlesApp::UpdateScene(float dt)
 	//
 	// Control the camera.
 	//
+	// 控制摄像头
 	if( GetAsyncKeyState('W') & 0x8000 )
 		mCam.Walk(10.0f*dt);
 
@@ -221,9 +225,8 @@ void ParticlesApp::UpdateScene(float dt)
 
 void ParticlesApp::DrawScene()
 {	
-	//xiaojun
-	//md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
+	//xiaojun md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
+	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black)); //背景颜色
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
