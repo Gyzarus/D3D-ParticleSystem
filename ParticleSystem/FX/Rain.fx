@@ -236,7 +236,6 @@ void DrawGS(point VertexOut gin[1],
 		lineStream.Append(v1);
 	}
 }
-
 // ÏñËØ×ÅµãÆ÷
 float4 DrawPS(GeoOut pin) : SV_TARGET
 {

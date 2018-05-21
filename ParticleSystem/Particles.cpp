@@ -252,6 +252,7 @@ void ParticlesApp::DrawScene()
 	mRain.SetEyePos(mCam.GetPosition());
 	mRain.SetEmitPos(mCam.GetPosition());
 	mRain.Draw(md3dImmediateContext, mCam);
+	//xiaojun mFire.Draw(md3dImmediateContext, mCam);
 
 	// restore default states.
 	md3dImmediateContext->RSSetState(0);

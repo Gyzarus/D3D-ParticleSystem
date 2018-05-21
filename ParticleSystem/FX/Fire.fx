@@ -126,7 +126,6 @@ void StreamOutGS(point Particle gin[1],
 	if( gin[0].Type == PT_EMITTER )
 	{	
 		// time to emit a new particle?
-		// xiaojun if( gin[0].Age > 0.005f )
 		if( gin[0].Age > 0.005f )
 		{
 			float3 vRandom = RandUnitVec3(0.0f);
@@ -233,7 +232,7 @@ void DrawGS(point VertexOut gin[1],
 		float3 up    = cross(look, right);
 		//
 		// Compute triangle strip vertices (quad) in world space.
-		//根据中心顶点，计算三角带形式的四个角的顶点坐标
+		//根据中心顶点，计算三角形带的四个角的顶点坐标
 		float halfWidth  = 0.5f*gin[0].SizeW.x;
 		float halfHeight = 0.5f*gin[0].SizeW.y;
 	
@@ -251,7 +250,7 @@ void DrawGS(point VertexOut gin[1],
 		[unroll]
 		for(int i = 0; i < 4; ++i)
 		{
-			gout.PosH = mul(v[i], gViewProj); //这里不需要world投影，因为在应用程序阶段产生了世界坐标。保存了齐次空间坐标。
+			gout.PosH = mul(v[i], gViewProj); //这里不需要世界投影，因为在应用程序阶段产生了世界坐标。保存了齐次空间坐标。
 			gout.Tex   = gQuadTexC[i];
 			gout.Color = gin[0].Color;
 			triStream.Append(gout);
