@@ -150,7 +150,7 @@ bool ParticlesApp::Init()
 
 	std::vector<std::wstring> flares;
 	//²ÄÖÊ¼ÓÔØ
-	flares.push_back(L"Textures\\flare0.dds");
+	flares.push_back(L"Textures\\flare.dds");
 	mFlareTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, flares);
 
 	mFire.Init(md3dDevice, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500); 
@@ -252,7 +252,7 @@ void ParticlesApp::DrawScene()
 	mRain.SetEyePos(mCam.GetPosition());
 	mRain.SetEmitPos(mCam.GetPosition());
 	mRain.Draw(md3dImmediateContext, mCam);
-	//xiaojun mFire.Draw(md3dImmediateContext, mCam);
+	//xiaojun md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff); 
 
 	// restore default states.
 	md3dImmediateContext->RSSetState(0);

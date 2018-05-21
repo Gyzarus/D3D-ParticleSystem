@@ -198,7 +198,7 @@ VertexOut DrawVS(Particle vin)
 	vout.PosW = 0.5f*t*t*gAccelW + t*vin.InitialVelW + vin.InitialPosW;
 	
 	// fade color with time
-	// 渐隐效果（调整颜色）
+	// 渐隐效果（调整透明度）
 	// smoothstep（）：根据param3在param1与param2中的位置返回0~1的一个值，是一个中部上升速度快，边界上升速度慢的递增函数
 	float opacity = 1.0f - smoothstep(0.0f, 1.0f, t / 1.0f);
 	vout.Color = float4(1.0f, 1.0f, 1.0f, opacity);
@@ -235,13 +235,13 @@ void DrawGS(point VertexOut gin[1],
 		//根据中心顶点，计算三角形带的四个角的顶点坐标
 		float halfWidth  = 0.5f*gin[0].SizeW.x;
 		float halfHeight = 0.5f*gin[0].SizeW.y;
-	
+
 		float4 v[4];
 		v[0] = float4(gin[0].PosW + halfWidth*right - halfHeight*up, 1.0f);
 		v[1] = float4(gin[0].PosW + halfWidth*right + halfHeight*up, 1.0f);
 		v[2] = float4(gin[0].PosW - halfWidth*right - halfHeight*up, 1.0f);
 		v[3] = float4(gin[0].PosW - halfWidth*right + halfHeight*up, 1.0f);
-		
+
 		//
 		// Transform quad vertices to world space and output 
 		// them as a triangle strip.

@@ -1,6 +1,6 @@
-﻿  fxc compile for release: F:\Program Files\project0\new\ParticleSystem\FX\Fire.fx
+﻿  fxc compile for release: F:\Program Files\project0\new\ParticleSystem\FX\Rain.fx
   Microsoft (R) Direct3D Shader Compiler 9.29.952.3111
   Copyright (C) Microsoft Corporation 2002-2009. All rights reserved.
   
-  compilation succeeded; see F:\Program Files\project0\new\ParticleSystem\FX\Fire.fxo
+  compilation succeeded; see F:\Program Files\project0\new\ParticleSystem\FX\Rain.fxo
   ParticleSystem.vcxproj -> F:\Program Files\project0\new\ParticleSystem\Release\ParticleSystem.exe
