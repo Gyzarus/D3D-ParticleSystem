@@ -9,7 +9,6 @@
 //      Hold the right mouse button down to zoom in and out.
 //
 //***************************************************************************************
-
 #include "d3dApp.h"
 #include "d3dx11Effect.h"
 #include "GeometryGenerator.h"
@@ -61,7 +60,6 @@ private:
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 				   PSTR cmdLine, int showCmd)
 {
-	// Enable run-time memory check for debug builds.
 	// 为调试启用运行时内存检查。
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -147,7 +145,6 @@ bool ParticlesApp::Init()
 	mTerrain.Init(md3dDevice, md3dImmediateContext, tii);
 	// 随机材质加载
 	mRandomTexSRV = d3dHelper::CreateRandomTexture1DSRV(md3dDevice);
-
 	std::vector<std::wstring> flares;
 	//材质加载
 	flares.push_back(L"Textures\\flare.dds");
@@ -155,11 +152,10 @@ bool ParticlesApp::Init()
 
 	mFire.Init(md3dDevice, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500); 
 	mFire.SetEmitPos(XMFLOAT3(0.0f, 1.0f, 120.0f));
-
 	std::vector<std::wstring> raindrops;
-	raindrops.push_back(L"Textures\\raindrop.dds");
+	raindrops.push_back(L"Textures\\snow.png");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, raindrops);
-
+	//D3DX11CreateShaderResourceViewFromFileW(md3dDevice, str, NULL, NULL, &mRainTexSRV, NULL);
 	mRain.Init(md3dDevice, Effects::RainFX, mRainTexSRV, mRandomTexSRV, 10000); 
 
 	return true;
@@ -247,8 +243,8 @@ void ParticlesApp::DrawScene()
 	// Draw particle systems last so it is blended with scene.
 	mFire.SetEyePos(mCam.GetPosition());
 	mFire.Draw(md3dImmediateContext, mCam);
-	md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 
+	md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	mRain.SetEyePos(mCam.GetPosition());
 	mRain.SetEmitPos(mCam.GetPosition());
 	mRain.Draw(md3dImmediateContext, mCam);
@@ -266,6 +262,8 @@ void ParticlesApp::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
+	//该函数在属于当前线程的指定窗口里设置鼠标捕获
+	//一旦窗口捕获了鼠标，所有鼠标输入都针对该窗口，无论光标是否在窗口的边界内。
 	SetCapture(mhMainWnd);
 }
 
