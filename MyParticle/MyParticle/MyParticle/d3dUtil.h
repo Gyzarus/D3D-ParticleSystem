@@ -16,7 +16,6 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include "MathHelper.h"
 #include "LightHelper.h"
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
