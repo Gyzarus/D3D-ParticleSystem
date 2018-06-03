@@ -1,4 +1,4 @@
-﻿  Particles.cpp
+﻿  Vertex.cpp
 f:\program files\directx\include\dxgitype.h(12): warning C4005: “DXGI_STATUS_OCCLUDED”: 宏重定义
           C:\Program Files (x86)\Windows Kits\8.1\Include\shared\winerror.h(50092) : 参见“DXGI_STATUS_OCCLUDED”的前一个定义
 f:\program files\directx\include\dxgitype.h(13): warning C4005: “DXGI_STATUS_CLIPPED”: 宏重定义
