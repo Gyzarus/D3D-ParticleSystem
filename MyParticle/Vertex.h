@@ -11,15 +11,6 @@
 
 namespace Vertex
 {
-	// Basic 32-byte vertex structure.
-	struct Basic32
-	{
-		XMFLOAT3 Pos;
-		XMFLOAT3 Normal;
-		XMFLOAT2 Tex;
-	};
-
-
 	struct Particle
 	{
 		XMFLOAT3 InitialPos;
@@ -35,7 +26,6 @@ class InputLayoutDesc
 public:
 	// Init like const int A::a[4] = {0, 1, 2, 3}; in .cpp file.
 	static const D3D11_INPUT_ELEMENT_DESC Pos[1];
-	static const D3D11_INPUT_ELEMENT_DESC Basic32[3];
 	static const D3D11_INPUT_ELEMENT_DESC Particle[5];
 };
 
@@ -46,7 +36,6 @@ public:
 	static void DestroyAll();
 
 	static ID3D11InputLayout* Pos;
-	static ID3D11InputLayout* Basic32;
 	static ID3D11InputLayout* Particle;
 };
 

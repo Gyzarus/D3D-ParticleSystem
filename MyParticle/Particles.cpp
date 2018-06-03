@@ -34,12 +34,15 @@ public:
 
 private:
 	ID3D11ShaderResourceView* mFlareTexSRV;
+	ID3D11ShaderResourceView* mSnowTexSRV;
 	ID3D11ShaderResourceView* mRainTexSRV;
 	ID3D11ShaderResourceView* mRandomTexSRV;
 
 	ParticleSystem mFire;
 	ParticleSystem mRain;
+	ParticleSystem mSnow;
 
+	INT32 mScenes;
 	Camera mCam;
 
 	POINT mLastMousePos;
@@ -62,9 +65,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 }
 
 ParticlesApp::ParticlesApp(HINSTANCE hInstance)
-: D3DApp(hInstance),mRandomTexSRV(0), mFlareTexSRV(0), mRainTexSRV(0)
+	: D3DApp(hInstance), mRandomTexSRV(0), mFlareTexSRV(0), mSnowTexSRV(0), mRainTexSRV(0), mScenes(0)
 {
-	mMainWndCaption = L"ParticlesSystem";
+	mMainWndCaption = L"ParticlesSystem 1:гъ";
 	mEnable4xMsaa = false;
 
 	mLastMousePos.x = 0;
@@ -78,6 +81,7 @@ ParticlesApp::~ParticlesApp()
 	md3dImmediateContext->ClearState();
 	
 	ReleaseCOM(mRandomTexSRV);
+	ReleaseCOM(mSnowTexSRV);
 	ReleaseCOM(mFlareTexSRV);
 	ReleaseCOM(mRainTexSRV);
 
@@ -101,9 +105,14 @@ bool ParticlesApp::Init()
 	std::vector<std::wstring> flares;
 	flares.push_back(L"Textures\\flare.dds");
 	mFlareTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, flares);
-
 	mFire.Init(md3dDevice, Effects::FireFX, mFlareTexSRV, mRandomTexSRV, 500); 
 	mFire.SetEmitPos(XMFLOAT3(0.0f, 1.0f, 120.0f));
+
+	std::vector<std::wstring> snowflake;
+	snowflake.push_back(L"Textures\\snow.png");
+	mSnowTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, snowflake);
+	mSnow.Init(md3dDevice, Effects::SnowFX, mSnowTexSRV, mRandomTexSRV, 10000);
+
 	std::vector<std::wstring> raindrops;
 	raindrops.push_back(L"Textures\\raindrop.dds");
 	mRainTexSRV = d3dHelper::CreateTexture2DArraySRV(md3dDevice, md3dImmediateContext, raindrops);
@@ -143,11 +152,27 @@ void ParticlesApp::UpdateScene(float dt)
 	//
 	if(GetAsyncKeyState('R') & 0x8000)
 	{
-		mFire.Reset();
-		mRain.Reset();
+		mScenes = 0;
 	}
- 
+	if (GetAsyncKeyState('1') & 0x8000)
+	{
+		mScenes = 1;
+	}	
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		mScenes = 2;
+	}	
+	if (GetAsyncKeyState('3') & 0x8000)
+	{
+		mScenes = 3;
+	}	
+	if (GetAsyncKeyState('4') & 0x8000)
+	{
+		mScenes = 4;
+	}
+
 	mFire.Update(dt, mTimer.TotalTime());
+	mSnow.Update(dt, mTimer.TotalTime());
 	mRain.Update(dt, mTimer.TotalTime());
 
 	mCam.UpdateViewMatrix();
@@ -171,6 +196,10 @@ void ParticlesApp::DrawScene()
 	// Draw particle systems last so it is blended with scene.
 	mFire.SetEyePos(mCam.GetPosition());
 	mFire.Draw(md3dImmediateContext, mCam);
+	
+	mSnow.SetEyePos(mCam.GetPosition());
+	mSnow.SetEmitPos(mCam.GetPosition());
+	mSnow.Draw(md3dImmediateContext, mCam);
 
 	md3dImmediateContext->OMSetBlendState(0, blendFactor, 0xffffffff); // restore default
 	mRain.SetEyePos(mCam.GetPosition());

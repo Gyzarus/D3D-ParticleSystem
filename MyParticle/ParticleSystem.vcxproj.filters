@@ -130,4 +130,9 @@
       <Filter>FX</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="FX\snow.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

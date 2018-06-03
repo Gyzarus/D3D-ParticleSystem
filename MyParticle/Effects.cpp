@@ -28,31 +28,6 @@ Effect::~Effect()
 }
 #pragma endregion
 
-#pragma region BasicEffect
-BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& filename)
-	: Effect(device, filename)
-{
-	Light1Tech    = mFX->GetTechniqueByName("Light1");
-
-	WorldViewProj     = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
-	World             = mFX->GetVariableByName("gWorld")->AsMatrix();
-	WorldInvTranspose = mFX->GetVariableByName("gWorldInvTranspose")->AsMatrix();
-	TexTransform      = mFX->GetVariableByName("gTexTransform")->AsMatrix();
-	EyePosW           = mFX->GetVariableByName("gEyePosW")->AsVector();
-	FogColor          = mFX->GetVariableByName("gFogColor")->AsVector();
-	FogStart          = mFX->GetVariableByName("gFogStart")->AsScalar();
-	FogRange          = mFX->GetVariableByName("gFogRange")->AsScalar();
-	DirLights         = mFX->GetVariableByName("gDirLights");
-	Mat               = mFX->GetVariableByName("gMaterial");
-	DiffuseMap        = mFX->GetVariableByName("gDiffuseMap")->AsShaderResource();
-	CubeMap           = mFX->GetVariableByName("gCubeMap")->AsShaderResource();
-}
-
-BasicEffect::~BasicEffect()
-{
-}
-#pragma endregion
-
 #pragma region ParticleEffect
 ParticleEffect::ParticleEffect(ID3D11Device* device, const std::wstring& filename)
 	: Effect(device, filename)
@@ -77,20 +52,20 @@ ParticleEffect::~ParticleEffect()
 
 #pragma region Effects
 
-BasicEffect*   Effects::BasicFX   = 0;
 ParticleEffect* Effects::FireFX   = 0;
 ParticleEffect* Effects::RainFX   = 0;
+ParticleEffect* Effects::SnowFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
-	BasicFX = new BasicEffect(device, L"FX/Basic.fxo");
+	SnowFX = new ParticleEffect(device, L"FX/Snow.fxo");
 	FireFX = new ParticleEffect(device, L"FX/Fire.fxo");
 	RainFX = new ParticleEffect(device, L"FX/Rain.fxo");
 }
 
 void Effects::DestroyAll()
 {
-	SafeDelete(BasicFX);
+	SafeDelete(SnowFX);
 	SafeDelete(FireFX);
 	SafeDelete(RainFX);
 }
