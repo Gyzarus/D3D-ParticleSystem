@@ -70,6 +70,7 @@ public:
 	static ParticleEffect* SnowFX;
 	static ParticleEffect* FireFX;
 	static ParticleEffect* RainFX;
+	static ParticleEffect* FireworksFX;
 };
 #pragma endregion
 

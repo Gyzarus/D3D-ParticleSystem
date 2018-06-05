@@ -289,7 +289,8 @@ technique11 DrawTech
         SetVertexShader(   CompileShader( vs_5_0, DrawVS() ) );
         SetGeometryShader( CompileShader( gs_5_0, DrawGS() ) );
         SetPixelShader(    CompileShader( ps_5_0, DrawPS() ) );
-        
+
+		SetBlendState(AdditiveBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
         SetDepthStencilState( NoDepthWrites, 0 );
     }
 }

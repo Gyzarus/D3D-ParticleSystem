@@ -55,12 +55,14 @@ ParticleEffect::~ParticleEffect()
 ParticleEffect* Effects::FireFX   = 0;
 ParticleEffect* Effects::RainFX   = 0;
 ParticleEffect* Effects::SnowFX = 0;
+ParticleEffect* Effects::FireworksFX = 0;
 
 void Effects::InitAll(ID3D11Device* device)
 {
 	SnowFX = new ParticleEffect(device, L"FX/Snow.fxo");
 	FireFX = new ParticleEffect(device, L"FX/Fire.fxo");
 	RainFX = new ParticleEffect(device, L"FX/Rain.fxo");
+	FireworksFX = new ParticleEffect(device, L"FX/firework.fxo");
 }
 
 void Effects::DestroyAll()
@@ -68,6 +70,7 @@ void Effects::DestroyAll()
 	SafeDelete(SnowFX);
 	SafeDelete(FireFX);
 	SafeDelete(RainFX);
+	SafeDelete(FireworksFX);
 }
 
 #pragma endregion
