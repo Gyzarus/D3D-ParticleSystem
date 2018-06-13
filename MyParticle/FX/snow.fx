@@ -1,9 +1,3 @@
-//=============================================================================
-// Rain.fx by Frank Luna (C) 2011 All Rights Reserved.
-//
-// Rain particle system.  Particles are emitted directly in world space.
-//=============================================================================
-
 
 //***********************************************
 // GLOBALS                                      *
@@ -26,7 +20,7 @@ cbuffer cbFixed
 {
 	// Net constant acceleration used to accerlate the particles.
 	//粒子的恒定加速度
-	float3 gAccelW = {-1.0f, -4.0f, 0.0f};
+	float3 gAccelW = {-1.0f, -9.8f, 0.0f};
 };
  
 // Array of textures for texturing the particles.
@@ -145,6 +139,9 @@ void StreamOutGS(point Particle gin[1],
 				Particle p;
 				p.InitialPosW = gEmitPosW.xyz + vRandom;
 				p.InitialVelW = float3(0.0f, 0.0f, 0.0f);
+
+				if (i>2)
+					p.InitialVelW = float3(-1.0f, 0.0f, 0.0f);
 				p.SizeW       = float2(0.15f, 0.15f);
 				p.Age         = 0.0f;
 				p.Type        = PT_FLARE;

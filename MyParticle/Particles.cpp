@@ -67,7 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 }
 
 ParticlesApp::ParticlesApp(HINSTANCE hInstance)
-	: D3DApp(hInstance), mRandomTexSRV(0), mFlareTexSRV(0), mSnowTexSRV(0), mFireworkTexSRV(0), mRainTexSRV(0), mScenes(4)
+	: D3DApp(hInstance), mRandomTexSRV(0), mFlareTexSRV(0), mSnowTexSRV(0), mFireworkTexSRV(0), mRainTexSRV(0), mScenes(1)
 {
 	mMainWndCaption = L"ParticlesSystem 1:гъ";
 	mEnable4xMsaa = false;
@@ -165,10 +165,13 @@ void ParticlesApp::UpdateScene(float dt)
 	if (GetAsyncKeyState('1') & 0x8000)
 	{
 		mScenes = 1;
+		mFirework.Reset();
+
 	}	
 	if (GetAsyncKeyState('2') & 0x8000)
 	{
 		mScenes = 2;
+		mSnow.Reset();
 	}	
 	if (GetAsyncKeyState('3') & 0x8000)
 	{

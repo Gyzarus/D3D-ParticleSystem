@@ -27,7 +27,7 @@ cbuffer cbFixed
 	// Net constant acceleration used to accerlate the particles.
 	//粒子的恒定加速度
 	//xiaojun
-	float3 gAccelW = { 0.0f, -29.8f, 0.0f };
+	float3 gAccelW = { 0.0f, -9.8f, 0.0f };
 };
 
 // Array of textures for texturing the particles.
@@ -79,8 +79,8 @@ float3 RandUnitVec3(float offset)
 	// coordinates in [-1,1]
 	float3 v = gRandomTex.SampleLevel(samLinear, u, 0).xyz;
 
-		// project onto unit sphere
-		return normalize(v);
+	// project onto unit sphere
+	return normalize(v);
 }
 
 float3 RandVec3(float offset)
@@ -92,11 +92,11 @@ float3 RandVec3(float offset)
 	// coordinates in [-1,1]
 	float3 v = gRandomTex.SampleLevel(samLinear, u, 0).xyz;
 
-		//xiaojun return v;
-		return normalize(v);
+	//xiaojun return v;
+	return normalize(v);
 }
 
-float3 RandVec3(float offset, int i)
+float3 RandCol3(float offset)
 {
 	// Use game time plus offset to sample random texture.
 	//xiaojun 	float u = (gGameTime + offset);
@@ -105,8 +105,8 @@ float3 RandVec3(float offset, int i)
 	// coordinates in [-1,1]
 	float3 v = gRandomTex.SampleLevel(samLinear, u, 0).xyz;
 
-		//xiaojun return v;
-		return v;
+	//xiaojun return v;
+	return v;
 }
 float RandVec(float offset)
 {
@@ -165,10 +165,8 @@ void StreamOutGS(point Particle gin[1],
 					//将雨滴随机散开
 					float3 vRandom = float3(0.0f, 20.0f, 200.0f);
 
-					float3 vRandom2 = 20.0f*RandVec3((float)i / 100.0f);
-						//
-
-						Particle p;
+					float3 vRandom2 = 15.0f*RandVec3((float)i / 100.0f);
+					Particle p;
 					//xiaojun p.InitialPosW = gEmitPosW.xyz + vRandom;
 					p.InitialPosW = vRandom3 + vRandom;
 					p.InitialPosW.y = 20.0f;
@@ -197,7 +195,7 @@ void StreamOutGS(point Particle gin[1],
 		//if( gin[0].Age <= 1.0f )
 		//float ve = gin[0].InitialVelW.y + gAccelW.y*gin[0].Age;
 		//if (ve>-3.0)
-		if (gin[0].Age <= 2.5f )
+		if (gin[0].Age <= 4.0f )
 			ptStream.Append(gin[0]);
 	}
 }
@@ -231,7 +229,7 @@ struct VertexOut
 	float4 ColorW : COLOR;
 	uint   Type  : TYPE;
 };
-// 编写定点着色器
+// 编写顶点着色器
 VertexOut DrawVS(Particle vin)
 {
 	VertexOut vout;
@@ -241,8 +239,9 @@ VertexOut DrawVS(Particle vin)
 	// constant acceleration equation
 	// 恒定加速度计算距离公式
 	vout.PosW = 0.5f*t*t*gAccelW + t*vin.InitialVelW + vin.InitialPosW;
-	float opacity = 1.0f - smoothstep(0.0f, 1.0f, t / 2.5f);
-	vout.ColorW = float4(0.3f, 1.0f, 0.5f, opacity);
+	float opacity = 1.0f - smoothstep(0.0f, 1.0f, t / 4.0f);
+	float3 v = (1 + RandCol3(vin.InitialPosW.x)) / 2;
+	vout.ColorW = float4( v, opacity);
 	vout.Type = vin.Type;
 
 	return vout;

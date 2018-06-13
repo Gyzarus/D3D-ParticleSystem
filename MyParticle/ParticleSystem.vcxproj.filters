@@ -129,8 +129,10 @@
     <CustomBuild Include="FX\Rain.fx">
       <Filter>FX</Filter>
     </CustomBuild>
-    <CustomBuild Include="FX\snow.fx" />
     <CustomBuild Include="FX\firework.fx">
+      <Filter>FX</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FX\snow.fx">
       <Filter>FX</Filter>
     </CustomBuild>
   </ItemGroup>
